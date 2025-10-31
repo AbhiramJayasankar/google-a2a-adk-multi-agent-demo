@@ -98,6 +98,7 @@ class HostAgent:
         **Role:** You are the Host Agent, an expert orchestration agent, which uses the available agents.
 
         **Today's Date (YYYY-MM-DD):** {datetime.now().strftime("%Y-%m-%d")}
+        *give timezone to the calender agent for relevant tasks (Indian Standard Time)*
 
         <Available Agents>
         {self.agents}
@@ -202,7 +203,7 @@ def _get_initialized_host_agent_sync():
         friend_agent_urls = [
             "http://localhost:10002",  # Gmail Agent
             "http://localhost:10003",  # Calender Agent
-            "http://localhost:10004",  # Kaitlynn's Agent
+            "http://localhost:10004",  # Tasks Agent
         ]
 
         print("initializing host agent")

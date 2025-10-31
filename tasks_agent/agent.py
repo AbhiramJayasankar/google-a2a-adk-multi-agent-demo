@@ -1,10 +1,10 @@
-from google.adk.agents import Agent
-from tasks_agent.list_tasks_tool import list_tasks
-from tasks_agent.create_task_tool import create_task
-from tasks_agent.update_task_tool import update_task
-from tasks_agent.delete_task_tool import delete_task
-from tasks_agent.complete_task_tool import complete_task
-from tasks_agent.list_tasklists_tool import list_tasklists
+from google.adk.agents import LlmAgent
+from list_tasks_tool import list_tasks
+from create_task_tool import create_task
+from update_task_tool import update_task
+from delete_task_tool import delete_task
+from complete_task_tool import complete_task
+from list_tasklists_tool import list_tasklists
 
 agent_instruction = """
 You are an assistant that can help manage a user's Google Tasks and to-do lists.
@@ -26,7 +26,10 @@ Important notes:
 - Always confirm with the user before deleting tasks
 """
 
-root_agent = Agent(
+
+def create_agent() -> LlmAgent:
+    """Constructs the ADK agent."""
+    return LlmAgent(
     model="gemini-2.5-flash",
     name="tasks_agent",
     description="A helpful assistant for managing Google Tasks and to-do lists. It can list tasks, create new tasks with notes and due dates, update existing tasks, mark tasks as completed, delete tasks, and manage multiple task lists.",

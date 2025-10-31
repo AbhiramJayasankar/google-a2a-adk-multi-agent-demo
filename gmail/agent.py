@@ -18,7 +18,7 @@ You have five tools available:
 
 
 def create_agent() -> LlmAgent:
-    """Constructs the ADK agent for Karley."""
+    """Constructs the ADK agent."""
     return LlmAgent(
     model="gemini-2.5-flash",
     name="email_agent",

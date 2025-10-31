@@ -1,52 +1,22 @@
-# A2A Friend Scheduling Demo
-This document describes a multi-agent application demonstrating how to orchestrate conversations between different agents to schedule a meeting.
+# Agent2Agent
 
-This application contains four agents:
-*   **Host Agent**: The primary agent that orchestrates the scheduling task.
-*   **Kaitlynn Agent**: An agent representing Kaitlynn's calendar and preferences.
-*   **Nate Agent**: An agent representing Nate's calendar and preferences.
-*   **Karley Agent**: An agent representing Karley's calendar and preferences.
+Lightweight playground for coordinating Gmail, Calendar, and Tasks automations through specialized agents orchestrated by a host. Each agent focuses on one Google surface so you can test end-to-end intent handling or plug the pieces into your own workflows.
 
-## Setup and Deployment
+## What’s Inside
+- **host_agent_adk**: spins up the host agent that brokers requests and exposes an ADK web UI for testing.
+- **gmail**: tools for searching, reading, and sending email.
+- **calendar_agent**: handlers around listing, creating, updating, and deleting calendar events.
+- **tasks_agent**: helpers for managing Google Tasks lists and items.
 
-### Prerequisites
+## Run It
+All commands use the project’s `uv` environment manager.
 
-Before running the application locally, ensure you have the following installed:
-
-1. **uv:** The Python package management tool used in this project. Follow the installation guide: [https://docs.astral.sh/uv/getting-started/installation/](https://docs.astral.sh/uv/getting-started/installation/)
-2. **python 3.13** Python 3.13 is required to run a2a-sdk 
-3. **set up .env** 
-
-Create a `.env` file in the root of the `a2a_friend_scheduling` directory with your Google API Key:
 ```
-GOOGLE_API_KEY="your_api_key_here" 
+uv sync
+uv run --directory .\host_agent_adk -- adk web
+uv run python .\gmail\__main__.py
+uv run python .\calendar_agent\__main__.py
+uv run python .\tasks_agent\__main__.py
 ```
 
-## Run the Agents
-
-You will need to run each agent in a separate terminal window. The first time you run these commands, `uv` will create a virtual environment and install all necessary dependencies before starting the agent.
-
-
-### Terminal 3: Run Karley Agent
-```bash
-cd karley_agent_adk
-uv venv
-source .venv/bin/activate
-uv run --active .
-```
-
-### Terminal 4: Run Host Agent
-```bash
-cd host_agent_adk
-uv venv
-source .venv/bin/activate
-uv run --active adk web      
-```
-
-## Interact with the Host Agent
-
-Once all agents are running, the host agent will begin the scheduling process. You can view the interaction in the terminal output of the `host_agent`.
-
-## References
-- https://github.com/google/a2a-python
-- https://codelabs.developers.google.com/intro-a2a-purchasing-concierge#1
+Launch each long-running service in its own terminal. Launch the sub agents first. The ADK UI will be available once the host process is up; the individual agents connect automatically.
