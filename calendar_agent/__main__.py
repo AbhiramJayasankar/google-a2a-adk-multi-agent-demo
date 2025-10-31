@@ -11,7 +11,7 @@ from a2a.types import (
     AgentSkill,
 )
 from agent import create_agent
-from agent_executor import KarleyAgentExecutor
+from agent_executor import CalenderAgentExecutor
 from dotenv import load_dotenv
 from google.adk.artifacts import InMemoryArtifactService
 from google.adk.memory.in_memory_memory_service import InMemoryMemoryService
@@ -33,7 +33,7 @@ class MissingAPIKeyError(Exception):
 def main():
     """Starts the agent server."""
     host = "localhost"
-    port = 10002
+    port = 10003
     try:
         # Check for API key only if Vertex AI is not configured
         if not os.getenv("GOOGLE_GENAI_USE_VERTEXAI") == "TRUE":
@@ -43,22 +43,52 @@ def main():
                 )
 
         capabilities = AgentCapabilities(streaming=True)
-        skill = AgentSkill(
-            id="check_schedule",
-            name="Check Karley's Schedule",
-            description="Checks Karley's availability for a pickleball game on a given date.",
-            tags=["scheduling", "calendar"],
-            examples=["Is Karley free to play pickleball tomorrow?"],
-        )
+        skills = [
+            AgentSkill(
+                id="calendar_list_events",
+                name="List Upcoming Events",
+                description="Shows upcoming calendar events within a specified time window.",
+                tags=["calendar", "events", "list"],
+                examples=["What meetings do I have this week?", "List the next three events on my calendar."],
+            ),
+            AgentSkill(
+                id="calendar_create_event",
+                name="Create Event",
+                description="Schedules a new calendar event with time, location, and optional attendees.",
+                tags=["calendar", "events", "create"],
+                examples=["Add a team sync tomorrow at 2 PM.", "Create a lunch meeting with Alex next Friday at noon."],
+            ),
+            AgentSkill(
+                id="calendar_search_events",
+                name="Search Events",
+                description="Finds calendar entries that match titles, descriptions, or attendee names.",
+                tags=["calendar", "events", "search"],
+                examples=["Find my appointments with the dentist.", "Look up events that mention quarterly review."],
+            ),
+            AgentSkill(
+                id="calendar_update_event",
+                name="Update Event",
+                description="Modifies details of an existing calendar event using its event ID.",
+                tags=["calendar", "events", "update"],
+                examples=["Move the project kickoff to 4 PM.", "Change the location of event ID 12345 to the main office."],
+            ),
+            AgentSkill(
+                id="calendar_delete_event",
+                name="Delete Event",
+                description="Removes an event from the calendar after confirmation.",
+                tags=["calendar", "events", "delete"],
+                examples=["Cancel event ID abc123.", "Delete my coffee chat with Jamie on Friday."],
+            ),
+        ]
         agent_card = AgentCard(
-            name="Karley Agent",
-            description="An agent that manages Karley's schedule for pickleball games.",
+            name="Calendar Agent",
+            description="An agent that manages Google Calendar events",
             url=f"http://{host}:{port}/",
             version="1.0.0",
             defaultInputModes=["text/plain"],
             defaultOutputModes=["text/plain"],
             capabilities=capabilities,
-            skills=[skill],
+            skills=skills,
         )
 
         adk_agent = create_agent()
@@ -69,7 +99,7 @@ def main():
             session_service=InMemorySessionService(),
             memory_service=InMemoryMemoryService(),
         )
-        agent_executor = KarleyAgentExecutor(runner)
+        agent_executor = CalenderAgentExecutor(runner)
 
         request_handler = DefaultRequestHandler(
             agent_executor=agent_executor,

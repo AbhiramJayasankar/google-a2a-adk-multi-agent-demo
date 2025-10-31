@@ -87,7 +87,7 @@ class HostAgent:
             model="gemini-2.5-flash",
             name="Host_Agent",
             instruction=self.root_instruction,
-            description="This Host agent orchestrates scheduling pickleball with friends.",
+            description="This Host agent orchestrates multiple sub agents.",
             tools=[
                 self.send_message,
             ],
@@ -201,7 +201,7 @@ def _get_initialized_host_agent_sync():
         # Hardcoded URLs for the friend agents
         friend_agent_urls = [
             "http://localhost:10002",  # Gmail Agent
-            "http://localhost:10003",  # Nate's Agent
+            "http://localhost:10003",  # Calender Agent
             "http://localhost:10004",  # Kaitlynn's Agent
         ]
 

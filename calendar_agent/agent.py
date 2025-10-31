@@ -1,9 +1,9 @@
-from google.adk.agents import Agent
-from calendar_agent.list_events_tool import list_events
-from calendar_agent.create_event_tool import create_event
-from calendar_agent.search_events_tool import search_events
-from calendar_agent.delete_event_tool import delete_event
-from calendar_agent.update_event_tool import update_event
+from google.adk.agents import LlmAgent
+from list_events_tool import list_events
+from create_event_tool import create_event
+from search_events_tool import search_events
+from delete_event_tool import delete_event
+from update_event_tool import update_event
 
 agent_instruction = """
 You are an assistant that can help manage a user's Google Calendar.
@@ -22,7 +22,9 @@ Important notes:
 - When creating events with attendees, notifications will be sent automatically
 """
 
-root_agent = Agent(
+def create_agent() -> LlmAgent:
+    """Constructs the ADK agent for Karley."""
+    return LlmAgent(
     model="gemini-2.5-flash",
     name="calendar_agent",
     description="A helpful assistant for managing Google Calendar. It can list upcoming events, create new events with details like time, location, and attendees, search for specific events, update existing events, and delete events from the calendar.",
