@@ -1,4 +1,4 @@
-# Agent2Agent
+# TriAgent Relay based on Google A2A and google ADK
 
 Lightweight playground for coordinating Gmail, Google Calendar, and Google Tasks automations through specialized agents orchestrated by a host. Each agent focuses on one Google surface so you can test end-to-end intent handling or plug the pieces into your own workflows.
 
