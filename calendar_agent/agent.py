@@ -25,7 +25,7 @@ Important notes:
 def create_agent() -> LlmAgent:
     """Constructs the ADK agent for Karley."""
     return LlmAgent(
-    model="gemini-2.5-flash",
+    model="gemini-3.1-flash-lite",
     name="calendar_agent",
     description="A helpful assistant for managing Google Calendar. It can list upcoming events, create new events with details like time, location, and attendees, search for specific events, update existing events, and delete events from the calendar.",
     instruction=agent_instruction,

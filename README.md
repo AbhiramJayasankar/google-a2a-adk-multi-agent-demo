@@ -1,22 +1,32 @@
-# TriAgent Relay based on Google A2A and google ADK
+# TriAgent Relay
 
-Lightweight playground for coordinating Gmail, Google Calendar, and Google Tasks automations through specialized agents orchestrated by a host. Each agent focuses on one Google surface so you can test end-to-end intent handling or plug the pieces into your own workflows.
+Multi-agent system on Google's A2A + ADK. A host agent routes natural-language requests to three specialized sub-agents (Gmail, Calendar, Tasks). A FastAPI BFF serves a custom React operations console that streams the host's responses over SSE.
 
-## What’s Inside
-- **host_agent_adk**: spins up the host agent that brokers requests and exposes an ADK web UI for testing.
-- **gmail**: tools for searching, reading, and sending email.
-- **calendar_agent**: handlers around listing, creating, updating, and deleting calendar events.
-- **tasks_agent**: helpers for managing Google Tasks lists and items.
+See **[PROJECT.md](./PROJECT.md)** for the full getting-started guide, project structure, and architecture.
 
-## Run It
-All commands use the project’s `uv` environment manager.
+## Stack
 
-```
+- **Python 3.13+** · `uv` workspace · `google-adk` · `a2a-sdk` · FastAPI
+- **React 19** · Vite · Tailwind 4 · zustand
+
+## Run
+
+```powershell
 uv sync
-uv run --directory .\host_agent_adk -- adk web
+
+# 1. Sub-agents (one terminal each, start first)
 uv run python .\gmail\__main__.py
 uv run python .\calendar_agent\__main__.py
 uv run python .\tasks_agent\__main__.py
+
+# 2. Host agent
+uv run --directory .\host_agent_adk -- adk web
+
+# 3. BFF
+uv run python -m porch
+
+# 4. Console (dev)
+cd website\frontend && npm install && npm run dev
 ```
 
-Launch each long-running service in its own terminal. Launch the sub agents first. The ADK UI will be available once the host process is up; the individual agents connect automatically.
+The console runs on `:5173`, BFF on `:7000`, host on `:8000`, sub-agents on `:10002–10004`. Drop a Google OAuth `credentials.json` at the repo root before first run.

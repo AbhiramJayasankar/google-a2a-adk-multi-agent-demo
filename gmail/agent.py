@@ -20,7 +20,7 @@ You have five tools available:
 def create_agent() -> LlmAgent:
     """Constructs the ADK agent."""
     return LlmAgent(
-    model="gemini-2.5-flash",
+    model="gemini-3.1-flash-lite",
     name="email_agent",
     description="A helpful assistant for managing Gmail. It can retrieve the most recent email, perform searches using keywords, senders, or subjects to find specific messages, get full details of a specific email by ID, download all attachments from an email and return localhost download links, and send emails to recipients.",
     instruction=agent_instruction,

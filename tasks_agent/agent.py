@@ -30,7 +30,7 @@ Important notes:
 def create_agent() -> LlmAgent:
     """Constructs the ADK agent."""
     return LlmAgent(
-    model="gemini-2.5-flash",
+    model="gemini-3.1-flash-lite",
     name="tasks_agent",
     description="A helpful assistant for managing Google Tasks and to-do lists. It can list tasks, create new tasks with notes and due dates, update existing tasks, mark tasks as completed, delete tasks, and manage multiple task lists.",
     instruction=agent_instruction,
